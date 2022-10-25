@@ -7,7 +7,7 @@ import {
 } from 'mdb-react-ui-kit';
 import { Row, Col, Button, Form  } from 'react-bootstrap'
 import Table from 'react-bootstrap/Table';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faTrash, faCheckDouble, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { Link } from 'react-router-dom';
@@ -16,6 +16,7 @@ import { Link } from 'react-router-dom';
 
 import ModalReact from "../../component/Modal";
 import SideBars from "../../component/SideNav"
+import axios from 'axios';
 
 const actions = [
     { name: 'selectAll', icon: faCheckDouble, bg: 'success' },
@@ -72,10 +73,23 @@ export default function UserList() {
     const handleClose = () => setShow(false);
     const [userid, setUserId] = useState();
     const [ischecked, setIsChecked] = useState(false);
+    const [searchData, setSearchData] = useState("");
     const handleShow = (id) => {
         setShow(true);
         setUserId(id)
     }
+    console.log(userid);
+    const [data, setData] = useState([]);
+    useEffect(() => {
+        axios.get('http://localhost:8080/user/user-full')
+            .then(res => {
+                setData(res.data);
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }, [users])
+    console.log(data);
     const selectAll = () => {
         setIsChecked(!ischecked);
         users.map((user) => {
@@ -87,14 +101,28 @@ const checkId = (id) => {
     console.log(a);
 }
     const deleteUser = () => {
-        let newUsers =  users.filter(user => user.id !== userid);
-        setUsers(newUsers)
-        setShow(false);
+        axios.delete(`http://localhost:8080/user/delete/${userid}`)
+            .then(res => {
+                console.log(res);
+                setData(data.filter(user => user.id !== userid));
+            })
+            .catch(err => {
+                console.log(err);
+            })
     }
+    const search = () => {
+        axios.get(`http://localhost:8080/user/userBy?param=${searchData}`)
+            .then(res => {
+                setData(res.data);
+            })
+            .catch(err => {
+                console.log(err);
+            })
+     }
 
     return (
         <div className='mt-4'>
-            <ModalReact show={show} handleClose={handleClose} deleteUser = {deleteUser} handleShow={handleShow}>Do you want delete user?</ModalReact>
+            <ModalReact show={show} handleClose={handleClose} deleteUser={deleteUser} handleShow={handleShow}>Do you want delete user?</ModalReact>
 
             <Row>
                 <Col md={2}>
@@ -119,8 +147,8 @@ const checkId = (id) => {
                         </Col>
                         <Col xs={4}>
                             <MDBInputGroup className='mb-3'>
-                                <input className='form-control' placeholder="Recipient's username" type='text' />
-                                <MDBBtn outline>Button</MDBBtn>
+                                <input className='form-control' onChange={e => setSearchData(e.target.value)} placeholder="Recipient's username" type='text' />
+                                <button className='btn btn-outline-info' onClick={search}>Search</button>
                             </MDBInputGroup>
                         </Col>
                     </Row>
@@ -134,109 +162,6 @@ const checkId = (id) => {
 
 
                     <div className="mt-4 mr-5">
-                        {/* <Table striped bordered hover>
-                            <MDBTableHead>
-                                <tr>
-                                    <th scope='col'>Name</th>
-                                    <th scope='col'>Title</th>
-                                    <th scope='col'>Status</th>
-                                    <th scope='col'>Position</th>
-                                    <th scope='col'>Actions</th>
-                                </tr>
-                            </MDBTableHead>
-                            <MDBTableBody>
-                                <tr>
-                                    <td>
-                                        <div className='d-flex align-items-center'>
-                                            <img
-                                                src='https://mdbootstrap.com/img/new/avatars/8.jpg'
-                                                alt=''
-                                                style={{ width: '45px', height: '45px' }}
-                                                className='rounded-circle'
-                                            />
-                                            <div className='ms-3'>
-                                                <p className='fw-bold mb-1'>John Doe</p>
-                                                <p className='text-muted mb-0'>john.doe@gmail.com</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <p className='fw-normal mb-1'>Software engineer</p>
-                                        <p className='text-muted mb-0'>IT department</p>
-                                    </td>
-                                    <td>
-                                        <MDBBadge color='success' pill>
-                                            Admin
-                                        </MDBBadge>
-                                    </td>
-                                    <td>Senior</td>
-                                    <td>
-                                        <button type="button" className="btn btn-outline-info me-2">Sửa</button>
-                                        <button type="button" className="btn btn-outline-danger" onClick={handleShow}>Xóa</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div className='d-flex align-items-center'>
-                                            <img
-                                                src='https://mdbootstrap.com/img/new/avatars/6.jpg'
-                                                alt=''
-                                                style={{ width: '45px', height: '45px' }}
-                                                className='rounded-circle'
-                                            />
-                                            <div className='ms-3'>
-                                                <p className='fw-bold mb-1'>Alex Ray</p>
-                                                <p className='text-muted mb-0'>alex.ray@gmail.com</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <p className='fw-normal mb-1'>Consultant</p>
-                                        <p className='text-muted mb-0'>Finance</p>
-                                    </td>
-                                    <td>
-                                        <MDBBadge color='primary' pill>
-                                            Onboarding
-                                        </MDBBadge>
-                                    </td>
-                                    <td>Junior</td>
-                                    <td>
-                                        <button type="button" className="btn btn-outline-info me-2">Sửa</button>
-                                        <button type="button" className="btn btn-outline-danger" onClick={handleShow}>Xóa</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div className='d-flex align-items-center'>
-                                            <img
-                                                src='https://mdbootstrap.com/img/new/avatars/7.jpg'
-                                                alt=''
-                                                style={{ width: '45px', height: '45px' }}
-                                                className='rounded-circle'
-                                            />
-                                            <div className='ms-3'>
-                                                <p className='fw-bold mb-1'>Kate Hunington</p>
-                                                <p className='text-muted mb-0'>kate.hunington@gmail.com</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <p className='fw-normal mb-1'>Designer</p>
-                                        <p className='text-muted mb-0'>UI/UX</p>
-                                    </td>
-                                    <td>
-                                        <MDBBadge color='warning' pill>
-                                            Awaiting
-                                        </MDBBadge>
-                                    </td>
-                                    <td>Senior</td>
-                                    <td>
-                                        <button type="button" className="btn btn-outline-info me-2">Sửa</button>
-                                        <button type="button" className="btn btn-outline-danger" onClick={handleShow}>Xóa</button>
-                                    </td>
-                                </tr>
-                            </MDBTableBody>
-                        </Table> */}
                         <Table striped bordered hover>
                             <thead>
                                 <tr>
@@ -252,7 +177,7 @@ const checkId = (id) => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {users.length > 0 ? users.map((user, index) => (
+                                {data.length > 0 ? data.map((user, index) => (
                                     <tr key={index}>
                                         <td><Form.Check aria-label="option 1" role="button" onClick={()=> checkId(user.id)}/></td>
                                         <td>{index + 1}</td>
@@ -267,8 +192,8 @@ const checkId = (id) => {
                                             </MDBBadge>
                                         </td>
                                         <td>
-                                            <button type="button" className="btn btn-info me-2"><Link style={{textDecoration: 'none', color:'white'}} to={`/update/${user.id}`}>Update</Link></button>
-                                            <button type="button" className="btn btn-danger" onClick={()=>handleShow(user.id)}>Delete</button>
+                                            <button type="button" className="btn btn-info me-2"><Link style={{ textDecoration: 'none', color: 'white' }} to={`/update/${user.idUser}`}>Update</Link></button>
+                                            <button type="button" className="btn btn-danger" onClick={() => handleShow(user.idUser)}>Delete</button>
                                         </td>
                                     </tr>
                                 )) : <tr ><td colSpan="8">No user.<Link to='/signup'>Create new user</Link></td></tr>}

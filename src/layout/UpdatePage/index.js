@@ -3,15 +3,15 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
+import { useState, useEffect } from 'react'
+import axios from 'axios';
 
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import {Link} from 'react-router-dom';
+import {Link, useParams} from 'react-router-dom';
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -36,7 +36,19 @@ export default function UpdatePage() {
       password: data.get('password'),
     });
   };
-
+  const [data, setData] = useState({});
+  console.log(data);
+  let { id } = useParams();
+  console.log(id);
+  useEffect(() => {
+    axios.get(`http://localhost:8080/user/userBy?param=${id}`)
+      .then(res => {
+        setData(res.data);
+      })
+      .catch(err => {
+        console.log(err);
+      })
+  }, [])
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
@@ -116,6 +128,17 @@ export default function UpdatePage() {
                   label="Password"
                   type="password"
                   id="password"
+                  autoComplete="new-password"
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="image"
+                  type="file"
+                  id="image"
                   autoComplete="new-password"
                 />
               </Grid>
