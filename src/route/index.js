@@ -27,7 +27,8 @@ export const publicRoutes = [
   { path: '/admin/users', component: Users },
   { path: '/admin/trash', component: Trash },
   { path: '/profile', component: ProfilePage },
-  { path: '/update/:id', component: UpdatePage },
+  { path: '/product/update/:id', component: AddproductPage },
+  { path: 'user/update/:id', component: Adduser },
   { path: '/add-user', component: Adduser },
 ];
 

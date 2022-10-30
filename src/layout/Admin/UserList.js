@@ -182,9 +182,9 @@ const checkId = (id) => {
                                         <td><Form.Check aria-label="option 1" role="button" onClick={()=> checkId(user.id)}/></td>
                                         <td>{index + 1}</td>
                                         <td className='col-1'><img style={{width: '50px', height:'50px', borderRadius: '50%'}} src={user.avt} /></td>
-                                        <td>{user.name}</td>
+                                        <td>{user.username}</td>
                                         <td>{user.email}</td>
-                                        <td>{user.phone}</td>
+                                        <td>{user.phoneNumber}</td>
                                         <td>{user.address}</td>
                                         <td>
                                             <MDBBadge color={user.badge} pill>

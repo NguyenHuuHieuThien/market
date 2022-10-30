@@ -1,7 +1,7 @@
 import SideBars from "../../component/SideNav"
 import { Row, Col, Button } from 'react-bootstrap'
 import Table from 'react-bootstrap/Table';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";   
 import { faPlus, faTrash, faCheckDouble, faTrashCan } from "@fortawesome/free-solid-svg-icons";
@@ -11,61 +11,71 @@ import {
     MDBBadge,
     MDBIcon
 } from 'mdb-react-ui-kit';
+import axios from "axios";
 
-const products = [
-    {
-        name: 'table',
-        price: 100,
-        image: 'https://cdn.popsww.com/blog/sites/2/2021/11/top-phim-co-trang-trung-quoc-moi.jpg',
-        description: 'this is a table',
-        date: '2021-11-11',
-        quantity: 10
-    },
-    {
-        name: 'motobike',
-        price: 100,
-        image: 'https://cdn.popsww.com/blog/sites/2/2021/11/top-phim-co-trang-trung-quoc-moi.jpg',
-        description: 'this is a motobike',
-        date: '2021-11-11',
-        quantity: 10
-    },
-    {
-        name: 'chair',
-        price: 100,
-        image: 'https://cdn.popsww.com/blog/sites/2/2021/11/top-phim-co-trang-trung-quoc-moi.jpg',
-        description: 'this is a chair',
-        date: '2021-11-11',
-        quantity: 10
-    },
-    {
-        name: 'cabinet',
-        price: 100,
-        image: 'https://cdn.popsww.com/blog/sites/2/2021/11/top-phim-co-trang-trung-quoc-moi.jpg',
-        description: 'this is a cabinet',
-        date: '2021-11-11',
-        quantity: 10
-    },
-    {
-        name: 'bed',
-        price: 100,
-        image: 'https://cdn.popsww.com/blog/sites/2/2021/11/top-phim-co-trang-trung-quoc-moi.jpg',
-        description: 'this is a bed',
-        date: '2021-11-11',
-        quantity: 10
-    },
-]
+// const products = [
+//     {
+//         name: 'table',
+//         price: 100,
+//         image: 'https://cdn.popsww.com/blog/sites/2/2021/11/top-phim-co-trang-trung-quoc-moi.jpg',
+//         description: 'this is a table',
+//         date: '2021-11-11',
+//         quantity: 10
+//     },
+//     {
+//         name: 'motobike',
+//         price: 100,
+//         image: 'https://cdn.popsww.com/blog/sites/2/2021/11/top-phim-co-trang-trung-quoc-moi.jpg',
+//         description: 'this is a motobike',
+//         date: '2021-11-11',
+//         quantity: 10
+//     },
+//     {
+//         name: 'chair',
+//         price: 100,
+//         image: 'https://cdn.popsww.com/blog/sites/2/2021/11/top-phim-co-trang-trung-quoc-moi.jpg',
+//         description: 'this is a chair',
+//         date: '2021-11-11',
+//         quantity: 10
+//     },
+//     {
+//         name: 'cabinet',
+//         price: 100,
+//         image: 'https://cdn.popsww.com/blog/sites/2/2021/11/top-phim-co-trang-trung-quoc-moi.jpg',
+//         description: 'this is a cabinet',
+//         date: '2021-11-11',
+//         quantity: 10
+//     },
+//     {
+//         name: 'bed',
+//         price: 100,
+//         image: 'https://cdn.popsww.com/blog/sites/2/2021/11/top-phim-co-trang-trung-quoc-moi.jpg',
+//         description: 'this is a bed',
+//         date: '2021-11-11',
+//         quantity: 10
+//     },
+// ]
 
 const actions = [
-    { name: 'selectAll', icon: faCheckDouble, bg: 'success' },
-    { name: 'create', icon: faPlus, bg: 'primary' },
-    { name: 'delete', icon: faTrash, bg: 'danger' },
+    { name: 'Chọn tất cả', icon: faCheckDouble, bg: 'success' },
+    { name: 'Tạo', icon: faPlus, bg: 'primary' },
+    { name: 'Xóa', icon: faTrash, bg: 'danger' },
 
 ]
 export default function ProductList() {
     const [show, setShow] = useState(false);
+    const [products, setProducts] = useState([]);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+    useEffect(() => { 
+        axios.get('http://localhost:8080/product/selectAll')
+            .then(res => {
+                console.log(res.data);
+                setProducts(res.data)
+            })
+            .catch(err => { console.log(err) })
+    },[])
     return (
         <div>
             <Modal
@@ -93,7 +103,7 @@ export default function ProductList() {
                 </Col>
                 <Col md={8}>
 
-                    <h1 className="text-center mt-4 text-uppercase">Product List</h1>
+                    <h1 className="text-center mt-4 text-uppercase">Duyệt sản phẩm</h1>
                     <Row>
                         <Col>
                             <div className="col-6 d-flex justify-content-start mb-2">
@@ -128,17 +138,19 @@ export default function ProductList() {
                                     <th>Giá</th>
                                     <th>Số Lượng</th>
                                     <th>Ngày Đăng</th>
+                                    <th>Trade park</th>
                                     <th>Thao Tác</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {products.map((product, index) => (
+                                {products.length > 0 && products.map((product, index) => (
                                     <tr key={index}>
-                                        <td className="col-1"><img src={product.image} alt="" width="100px" /></td>
-                                        <td>{product.name}</td>
+                                        <td className="col-1"><img src={product && product.file.length>0?`http://localhost:8080/file/downloadFile/${product.file[0].id}`:'no image'} alt="" width="100px" /></td>
+                                        <td>{product.productName}</td>
                                         <td>{product.price}</td>
                                         <td>{product.quantity}</td>
                                         <td>{product.date}</td>
+                                        <td>{product.tradePark}</td>
                                         <td>
                                             <button className="btn btn-success me-2">Confirm</button>
                                             <button className="btn btn-danger">Remove</button>

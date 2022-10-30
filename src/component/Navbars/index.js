@@ -90,12 +90,44 @@ export default function Navbars() {
                             ))}
                         </Nav>
                         <Nav>
-                            {menu.menu2.map((item, index) => (
+                            {/* {menu.menu2.map((item, index) => (
                                 <Nav.Link key={index} href={item.link}>
                                     <FontAwesomeIcon icon={item.icon} />
                                     <span className="ms-2">{item.name}</span>
                                 </Nav.Link>
-                            ))}
+                            ))} */}
+                            <div className="nav-profile">
+                                <img src="https://kenh14cdn.com/203336854389633024/2022/3/3/photo-1-1646304398991341232620.jpg" width="100px" alt="" />
+                                <div className="nav-profile-detail">
+                                    <div className="nav-profile-detail-item">
+                                        <div>
+                                            <div>Hiếu thiên</div>
+                                            <br />
+                                            Signed in as <br />
+                                            <span>nguyenthienn3347@gmail.com</span>
+                                        </div>
+                                    </div>
+
+                                    <div className="nav-profile-detail-item">
+                                        <i className="fas fa-user-circle"></i>
+                                        Profile
+                                    </div>
+                                    <div className="nav-profile-detail-item">
+                                        <i className="fas fa-cog"></i>
+                                        Setting
+                                    </div>
+                                    <div className="nav-profile-detail-item">
+                                        <i className="fas fa-comment-dots"></i>
+                                        Status
+                                    </div>
+                                    <div className="nav-profile-detail-item">
+                                        <i className="fas fa-sign-out-alt"></i>
+                                        Sign out
+                                    </div>
+
+
+                                </div>
+                            </div>
                         </Nav>
                     </Navbar.Collapse>
                 </Container>
