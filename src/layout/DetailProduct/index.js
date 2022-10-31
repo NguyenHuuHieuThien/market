@@ -85,7 +85,7 @@ export default function DetailProduct() {
                                 <img className='avt' src='https://danviet.mediacdn.vn/296231569849192448/2021/6/28/huakhai4-1624835323234-1624835323406100909784.jpg' />
                             </div>
                             <div>
-                                <div className='fw-bold'>Hua Khai</div>
+                                <div className='fw-bold'>Hua Khai abc</div>
                                 <div className='form-text'>2022-10-10 14:28 | Phân loại hàng: Tủ lạnh</div>
                             </div>
                         </div>
