@@ -1,12 +1,13 @@
 import ImageGallery from 'react-image-gallery';
 import { Row, Col } from 'react-bootstrap'
-
+import { useParams } from 'react-router-dom';
+import { faTruck, faPlus, faCirclePlus, faCircleMinus, faCartPlus } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useState } from 'react';
 import Navbars from "../../component/Navbars"
 import Footer from "../../component/Footer"
-import { useParams } from 'react-router-dom';
 import province from './../../Province/data.json'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTruck, faPlus, faCirclePlus, faCircleMinus, faCartPlus } from '@fortawesome/free-solid-svg-icons';
+import { useEffect } from 'react';
 const images = [
     {
         original: 'https://picsum.photos/id/1018/1000/600/',
@@ -25,9 +26,13 @@ const images = [
 
 export default function DetailProduct() {
     let provinces = Object.values(province);
+    let [amount, setAmount] = useState(1);
     console.log(provinces);
     let { id } = useParams();
     console.log(id);
+    useEffect(()=>{
+        
+    },[])
     return (
         <div>
             <Navbars />
@@ -53,9 +58,9 @@ export default function DetailProduct() {
                         <div className='mb-4 d-flex'>
                             <div className='me-5'>Số lượng</div>
                             <div>
-                                <FontAwesomeIcon icon={faCircleMinus} />
-                                <input type="number" className='w-25 text-center' value='1' />
-                                <FontAwesomeIcon icon={faCirclePlus} />
+                            <FontAwesomeIcon icon={faCircleMinus} role='button' onClick={()=> setAmount(amount - 1)} />
+                                <input type="number" value = {amount} className='w-25 text-center' />
+                                <FontAwesomeIcon icon={faCirclePlus} role='button' onClick={()=> setAmount(amount + 1)} />
                             </div>
                             <div className='form-text'>8384 Số lượng có sẵn</div>
                         </div>
@@ -84,6 +89,7 @@ export default function DetailProduct() {
                                 <div className='form-text'>2022-10-10 14:28 | Phân loại hàng: Tủ lạnh</div>
                             </div>
                         </div>
+                        <div></div>
                     </div>
                 </div>
             </div>

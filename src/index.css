@@ -37,15 +37,15 @@ code {
 
 body {
   width: 100vw;
-  height: 100vh;
+  height: auto;
   padding: 0;
   margin: 0;
 }
 
 /* background */
-.bg-main {
+/* .bg-main {
   background-color: #006266 !important;
-}
+} */
 
 .bg-sub {
   background-color: #1abc9c !important;
@@ -61,6 +61,9 @@ body {
 
 .bg-footer {
   background: #273140
+}
+.bg-nav{
+  background-color: #273140;
 }
 
 /*  */
@@ -158,6 +161,13 @@ input:focus {
 .text-hover:hover {
   color: #c2185b !important;
 }
+.text-main{
+  color: #e74c3c !important;
+}
+
+.border-underline{
+  border-bottom: 3px solid #e74c3c !important;
+}
 
 .border-main {
   border: 1px solid #2ecc71 !important;
@@ -183,8 +193,31 @@ background-color: #e84a5f
 
 /* header css */
 
+/* .nav-profile{
+  position: relative;
+  cursor: pointer;
+}
+
+.nav-profile:hover .nav-submenu{
+  visibility: visible;
+  opacity: 1;
+  transition: all 1.2s;
+}
+
+.nav-submenu{
+  width: 250px;
+  height: 250px;
+  background: #fff !important;
+  position: absolute;
+  top: 100%;
+  right:0;
+  visibility: hidden;
+  opacity: 0;
+  z-index: 999999;
+} */
 
 @import url(bootstrap.cosmo.css);
+@import url(animated.css);
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
