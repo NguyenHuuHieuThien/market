@@ -49,7 +49,7 @@ export default function DetailProduct() {
               <ImageGallery items={images} />
             </Col>
             <Col md={6}>
-              <h2 className="mb-4">Product Name</h2>
+              <h2 className="mb-4">Tên sản phẩm</h2>
               <h3 className="mb-4">Price: 1000$</h3>
               <div className="d-flex mb-5">
                 <div className="me-3">
