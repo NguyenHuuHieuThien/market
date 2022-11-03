@@ -9,7 +9,7 @@ import { Row, Col, Button, Form  } from 'react-bootstrap'
 import Table from 'react-bootstrap/Table';
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faTrash, faCheckDouble, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faTrash,faArrowsRotate, faCheckDouble,faChevronRight, faTrashCan,faHome, faList, faCheck,faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { Link } from 'react-router-dom';
 
 
@@ -19,9 +19,10 @@ import SideBars from "../../component/SideNav"
 import axios from 'axios';
 
 const actions = [
-    { name: 'selectAll', icon: faCheckDouble, bg: 'success' },
-    { name: 'create', icon: faPlus, bg: 'primary' },
-    { name: 'delete', icon: faTrash, bg: 'danger' },
+    { name: 'Nạp lại', icon: faArrowsRotate, bg: 'success' },
+    { name: 'Tạo', link: '/add-user', icon: faPlus, bg: 'primary' },
+    { name: 'Xóa', icon: faTrash, bg: 'danger' },
+    { name: 'Thùng rác', icon: faTrashCan, bg: 'info' },
 
 ]
 const Users = [
@@ -67,6 +68,13 @@ const Users = [
     },
 
 ]
+const profileMenu = [
+    { name: 'Trang chủ', link: '/', icon: faHome },
+    { name: 'Danh sách người dùng', link: '/admin/users', icon: faList },
+    { name: 'Phê duyệt bài đăng', link: '/admin/product-list', icon: faCheck },
+    { name: 'Đăng xuất', link: '/', icon: faRightFromBracket },
+]
+ 
 export default function UserList() {
     const [show, setShow] = useState(false);
     const [users, setUsers] = useState(Users);
@@ -121,51 +129,54 @@ const checkId = (id) => {
      }
 
     return (
-        <div className='mt-4'>
+        <div className='mt-4 bg-main'>
             <ModalReact show={show} handleClose={handleClose} deleteUser={deleteUser} handleShow={handleShow}>Do you want delete user?</ModalReact>
 
-            <Row>
-                <Col md={2}>
-                    <SideBars />
-                </Col>
-                <Col md={8}>
-                    <h1 className="mb-3 text-center fw-bold text-uppercase">Danh sách người dùng</h1>
-                    <Row>
-                        <Col>
-                            <div className="col-6 d-flex justify-content-start mb-2">
-                                {actions.map((action, index) => (
-                                    action.name === 'selectAll' ? 
-                                    <button role="button" onClick={selectAll} key={index} className={`border-0 me-1 py-1 text-white px-2 bg-${action.bg}`}>
-                                    <FontAwesomeIcon icon={action.icon} className="mr-0" /> {action.name}
-                                </button> : 
-                                    <button role="button" key={index} className={`border-0 me-1 py-1 text-white px-2 bg-${action.bg}`}>
-                                        <FontAwesomeIcon icon={action.icon} className="mr-0" /> {action.name}
-                                    </button>
-                                ))}
-
+            <div className="row">
+                <div className='col-3 bg-white rounded-2 p-0 ms-5'>
+                        <div className='w-100 sticky-top '>
+                            <div className='py-1 ps-3 mb-3'>
+                                {profileMenu.map((item, index) => {
+                                    return (
+                                        <Link to={item.link} className="text-decoration-none text-black">
+                                            <div className='d-flex justify-content-between p-3 mb-3'>
+                                                <span><FontAwesomeIcon icon={item.icon} className="me-2" /> {item.name}</span>
+                                                <FontAwesomeIcon icon={faChevronRight} />
+                                            </div>
+                                        </Link>
+                                    )
+                                })}
                             </div>
-                        </Col>
-                        <Col xs={4}>
-                            <MDBInputGroup className='mb-3'>
-                                <input className='form-control' onChange={e => setSearchData(e.target.value)} placeholder="Recipient's username" type='text' />
-                                <button className='btn btn-outline-info' onClick={search}>Search</button>
-                            </MDBInputGroup>
-                        </Col>
-                    </Row>
-                    <Col xs={2}>
-                        <div className='d-flex justify-content-start'>
-                            <Link to='/admin/trash'>
-                                <FontAwesomeIcon icon={faTrashCan} /> Go to Trash (9)
-                            </Link>
                         </div>
-                    </Col>
+                    </div>
+                <div className='col-8 bg-white rounded-2 p-3 ms-3'>
+                <h1 className="mb-5 mt-5 text-center text-uppercase">Danh sách người dùng</h1>
+                    <div className='bg-white rounded-3 shadow-sm'>
+                        <div className='row p-3'>
+                            <div className='col-8 d-flex align-items-center justify-content-between w-100'>
+                                <div className="col-6 d-flex">
+                                    {actions.map((action, index) => (
+                                        action.link ? <Link to={action.link} key={index}><button className="btn btn-primary me-1"><FontAwesomeIcon icon={action.icon} /> {action.name}</button></Link> :
+                                            <button role="button" key={index} className={`border-0 me-1 text-white px-2 bg-${action.bg}`}>
+                                                <FontAwesomeIcon icon={action.icon} className="mr-0" /> {action.name}
+                                            </button>
+                                    ))}
+                                </div>
+                                <div className="col-6">
+                                    <MDBInputGroup className=' d-flex align-items-center'>
+                                        <input className='form-control' placeholder="Nhập điều kiện..." type='text' />
+                                        <MDBBtn outline>Tìm kiếm</MDBBtn>
+                                    </MDBInputGroup>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
 
-                    <div className="mt-4 mr-5">
-                        <Table striped bordered hover>
-                            <thead>
-                                <tr>
-                                    <th></th>
+                    <div className="mt-3 bg-white rounded-3 shadow-sm">
+                        <Table>
+                            <thead className=''>
+                                <tr className='border-underline'>
                                     <th>STT</th>
                                     <th>Avatar</th>
                                     <th>Tên</th>
@@ -177,14 +188,13 @@ const checkId = (id) => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {data.length > 0 ? data.map((user, index) => (
+                                {users.length > 0 ? users.map((user, index) => (
                                     <tr key={index}>
-                                        <td><Form.Check aria-label="option 1" role="button" onClick={()=> checkId(user.id)}/></td>
                                         <td>{index + 1}</td>
-                                        <td className='col-1'><img style={{width: '50px', height:'50px', borderRadius: '50%'}} src={user.avt} /></td>
-                                        <td>{user.username}</td>
+                                        <td className='col-1'><img style={{ width: '50px', height: '50px', borderRadius: '50%' }} src={user.avt} /></td>
+                                        <td>{user.name}</td>
                                         <td>{user.email}</td>
-                                        <td>{user.phoneNumber}</td>
+                                        <td>{user.phone}</td>
                                         <td>{user.address}</td>
                                         <td>
                                             <MDBBadge color={user.badge} pill>
@@ -196,13 +206,17 @@ const checkId = (id) => {
                                             <button type="button" className="btn btn-danger" onClick={() => handleShow(user.idUser)}>Delete</button>
                                         </td>
                                     </tr>
-                                )) : <tr ><td colSpan="8">No user.<Link to='/signup'>Create new user</Link></td></tr>}
+                                )) : <tr ><td colSpan="8">Chưa có người dùng nào.<Link to='/sign-up'>Tạo mới một người dùng</Link></td></tr>}
+
 
                             </tbody>
                         </Table>
                     </div>
-                </Col>
-            </Row>
+                </div>
+            </div>
+
+
+
         </div>
 
     )

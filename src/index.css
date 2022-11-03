@@ -34,6 +34,15 @@ code {
 * {
   box-sizing: border-box;
 }
+/* avatar */
+.avt{
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+.upload{
+  background-color: #e84a5f  
+  }
 
 body {
   width: 100vw;
@@ -43,9 +52,9 @@ body {
 }
 
 /* background */
-/* .bg-main {
-  background-color: #006266 !important;
-} */
+.bg-main{
+  background-color:#f5f5f5!important;
+}
 
 .bg-sub {
   background-color: #1abc9c !important;
@@ -169,7 +178,7 @@ input:focus {
   border-bottom: 3px solid #e74c3c !important;
 }
 
-.border-main {
+.border-main{
   border: 1px solid #2ecc71 !important;
 }
 
@@ -191,30 +200,6 @@ background-color: #e84a5f
 
 }
 
-/* header css */
-
-/* .nav-profile{
-  position: relative;
-  cursor: pointer;
-}
-
-.nav-profile:hover .nav-submenu{
-  visibility: visible;
-  opacity: 1;
-  transition: all 1.2s;
-}
-
-.nav-submenu{
-  width: 250px;
-  height: 250px;
-  background: #fff !important;
-  position: absolute;
-  top: 100%;
-  right:0;
-  visibility: hidden;
-  opacity: 0;
-  z-index: 999999;
-} */
 
 @import url(bootstrap.cosmo.css);
 @import url(animated.css);

@@ -4,15 +4,28 @@ import Table from 'react-bootstrap/Table';
 import React, { useEffect, useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";   
-import { faPlus, faTrash, faCheckDouble, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faTrash,faArrowsRotate, faCheckDouble, faChevronRight,faTrashCan, faRightFromBracket, faCheck,faList,faHome } from "@fortawesome/free-solid-svg-icons";
 import {
     MDBInputGroup,
     MDBBtn,
     MDBBadge,
     MDBIcon
 } from 'mdb-react-ui-kit';
+import {Link} from 'react-router-dom'
 import axios from "axios";
+const profileMenu = [
+    { name: 'Trang chủ', link: '/', icon: faHome },
+    { name: 'Danh sách người dùng', link: '/admin/users', icon: faList },
+    { name: 'Phê duyệt bài đăng', link: '/admin/product-list', icon: faCheck },
+    { name: 'Đăng xuất', link: '/', icon: faRightFromBracket },
+]
+const actions = [
+    { name: 'Nạp lại', icon: faArrowsRotate, bg: 'success' },
+    { name: 'Tạo', link: '/add-user', icon: faPlus, bg: 'primary' },
+    { name: 'Xóa', icon: faTrash, bg: 'danger' },
+    { name: 'Thùng rác', icon: faTrashCan, bg: 'info' },
 
+]
 // const products = [
 //     {
 //         name: 'table',
@@ -56,12 +69,6 @@ import axios from "axios";
 //     },
 // ]
 
-const actions = [
-    { name: 'Chọn tất cả', icon: faCheckDouble, bg: 'success' },
-    { name: 'Tạo', icon: faPlus, bg: 'primary' },
-    { name: 'Xóa', icon: faTrash, bg: 'danger' },
-
-]
 export default function ProductList() {
     const [show, setShow] = useState(false);
     const [products, setProducts] = useState([]);
@@ -77,7 +84,7 @@ export default function ProductList() {
             .catch(err => { console.log(err) })
     },[])
     return (
-        <div>
+        <div className="mt-4 bg-main">
             <Modal
                 show={show}
                 onHide={handleClose}
@@ -97,42 +104,50 @@ export default function ProductList() {
                     <Button variant="danger" onClick={handleClose}>Xóa</Button>
                 </Modal.Footer>
             </Modal>
-            <Row>
-                <Col md={2}>
-                    <SideBars/>
-                </Col>
-                <Col md={8}>
-
-                    <h1 className="text-center mt-4 text-uppercase">Duyệt sản phẩm</h1>
-                    <Row>
-                        <Col>
-                            <div className="col-6 d-flex justify-content-start mb-2">
-                                {actions.map((action, index) => (
-                                    action.name === 'trash' ?
-                                        <button role="button" key={index} className={`border-0 me-2 py-1 text-white bg-${action.bg}`}>
-                                            <FontAwesomeIcon icon={action.icon} className="mr-2" /> {action.name}
-                                        </button>
-
-                                        :
-                                        <button role="button" key={index} className={`border-0 me-1 py-1 text-white px-2 bg-${action.bg}`}>
-                                            <FontAwesomeIcon icon={action.icon} className="mr-2" /> {action.name}
-                                        </button>
-                                ))}
-
-
+            <div className="row">
+            <div className='col-3 bg-white rounded-2 p-0 ms-5'>
+                        <div className='w-100 sticky-top '>
+                            <div className='py-1 ps-3 mb-3'>
+                                {profileMenu.map((item, index) => {
+                                    return (
+                                        <Link to={item.link} className="text-decoration-none text-black">
+                                            <div className='d-flex justify-content-between p-3 mb-3'>
+                                                <span><FontAwesomeIcon icon={item.icon} className="me-2" /> {item.name}</span>
+                                                <FontAwesomeIcon icon={faChevronRight} />
+                                            </div>
+                                        </Link>
+                                    )
+                                })}
                             </div>
-                        </Col>
-                        <Col xs={4}>
-                            <MDBInputGroup className='mb-3'>
-                                <input className='form-control' placeholder="Recipient's username" type='text' />
-                                <MDBBtn outline>Button</MDBBtn>
-                            </MDBInputGroup>
-                        </Col>
-                    </Row>
-                    <div className="mt-5 mr-5">
+                        </div>
+                    </div>
+
+                    <div className='col-8 bg-white rounded-2 p-3 ms-3'>
+                    <h1 className="mb-5 mt-5 text-center text-uppercase">Duyệt sản phẩm</h1>
+                    <div className='bg-white rounded-3 shadow-sm'>
+                        <div className='row p-3'>
+                            <div className='col-8 d-flex align-items-center justify-content-between w-100'>
+                                <div className="col-6 d-flex">
+                                    {actions.map((action, index) => (
+                                        action.link ? <Link to={action.link} key={index}><button className="btn btn-primary me-1"><FontAwesomeIcon icon={action.icon} /> {action.name}</button></Link> :
+                                            <button role="button" key={index} className={`border-0 me-1 text-white px-2 bg-${action.bg}`}>
+                                                <FontAwesomeIcon icon={action.icon} className="mr-0" /> {action.name}
+                                            </button>
+                                    ))}
+                                </div>
+                                <div className="col-6">
+                                    <MDBInputGroup className=' d-flex align-items-center'>
+                                        <input className='form-control' placeholder="Nhập điều kiện..." type='text' />
+                                        <MDBBtn outline>Tìm kiếm</MDBBtn>
+                                    </MDBInputGroup>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="mt-3 bg-white rounded-3 shadow-sm">
                         <Table striped bordered hover>
                             <thead>
-                                <tr>
+                                <tr className='border-underline'>
                                     <th>Hình ảnh</th>
                                     <th>Tên</th>
                                     <th>Giá</th>
@@ -143,7 +158,7 @@ export default function ProductList() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {products.length > 0 && products.map((product, index) => (
+                                {products.length > 0 ? products.map((product, index) => (
                                     <tr key={index}>
                                         <td className="col-1"><img src={product && product.file.length>0?`http://localhost:8080/file/downloadFile/${product.file[0].id}`:'no image'} alt="" width="100px" /></td>
                                         <td>{product.productName}</td>
@@ -152,17 +167,21 @@ export default function ProductList() {
                                         <td>{product.date}</td>
                                         <td>{product.tradePark}</td>
                                         <td>
-                                            <button className="btn btn-success me-2">Confirm</button>
-                                            <button className="btn btn-danger">Remove</button>
+                                            <button type="button" className="btn btn-info me-2"><Link style={{ textDecoration: 'none', color: 'white' }} to={`/update/product/${product.idUser}`}>Update</Link></button>
+                                            <button type="button" className="btn btn-danger" onClick={() => handleShow(product.idUser)}>Delete</button>
                                         </td>
                                     </tr>
-                                ))}
+                                )) : <tr ><td colSpan="8">Chưa có bài đăng nào.<Link to='/sign-up'>Tạo mới một bài đăng người dùng</Link></td></tr>}
+
 
                             </tbody>
                         </Table>
                     </div>
-                </Col>
-            </Row>
+                    </div>
+
+
+            </div>
+            
         </div>
     )
 }
