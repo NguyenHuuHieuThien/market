@@ -110,7 +110,7 @@ export default function ProductList() {
                             <div className='py-1 ps-3 mb-3'>
                                 {profileMenu.map((item, index) => {
                                     return (
-                                        <Link to={item.link} className="text-decoration-none text-black">
+                                        <Link to={item.link} key={index} className="text-decoration-none text-black">
                                             <div className='d-flex justify-content-between p-3 mb-3'>
                                                 <span><FontAwesomeIcon icon={item.icon} className="me-2" /> {item.name}</span>
                                                 <FontAwesomeIcon icon={faChevronRight} />

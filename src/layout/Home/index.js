@@ -6,7 +6,7 @@ import { faArrowRight } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 export default function HomePage() {
     return (
-        <div className="bg-main">
+        <div>
             <Navbars position='sticky-top' />
             {/* <div className="bg-main ">
                 <div className="container ">
